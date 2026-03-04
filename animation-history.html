@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A (Brief) History of Animation</title>
+<meta name="description" content="From cave paintings to CGI spectacles — the complete story of how humans learned to make pictures move.">
+<meta name="keywords" content="animation history, Disney, Pixar, anime, CGI, cel animation, zoetrope, cartoons, stop motion, Miyazaki">
+<meta name="theme-color" content="#1a0a2e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23ff3366'/><text y='.9em' font-size='80'>🎬</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:   #ff3366;
+  --secondary: #ffcc00;
+  --tertiary:  #00ccff;
+  --mint:      #00e6a0;
+  --purple:    #7c3aed;
+  --orange:    #ff6b35;
+  --black:     #0d0d0d;
+  --white:     #fdf8f0;
+  --era1:      #fff0f3;
+  --era2:      #fffbe6;
+  --era3:      #e6f9ff;
+  --era4:      #f0ffe8;
+  --era5:      #f3eeff;
+  --display:   'Boogaloo', cursive;
+  --body:      'DM Mono', monospace;
+}
+[data-theme="dark"] {
+  --era1: #2a0a14; --era2: #1a1500; --era3: #001a2a; --era4: #001a0f; --era5: #12002a;
+  --white: #fdf8f0; --black: #0d0d0d;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--body);
+  background: var(--black);
+  color: var(--white);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ─── CURSOR ─── */
+#cursor-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--primary);
+  position: fixed; top: 0; left: 0; pointer-events: none;
+  z-index: 9999; transform: translate(-50%,-50%);
+  mix-blend-mode: screen;
+  transition: background .3s;
+}
+#cursor-ring {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 2px solid var(--secondary);
+  position: fixed; top: 0; left: 0; pointer-events: none;
+  z-index: 9998; transform: translate(-50%,-50%);
+  transition: left .08s, top .08s, border-color .3s;
+}
+.pop-tip {
+  position: fixed; z-index: 9990; background: var(--black);
+  border: 2px solid var(--secondary); color: var(--white);
+  font-family: var(--body); font-size: .72rem; padding: 6px 10px;
+  max-width: 220px; pointer-events: none; opacity: 0;
+  transition: opacity .2s; border-radius: 3px;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh; background: #1a0a2e;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; text-align: center;
+  border-bottom: 5px solid var(--black);
+}
+.hero-bg-circles {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.hero-bg-circles circle { animation: floatCircle 6s ease-in-out infinite alternate; }
+.hero-bg-circles circle:nth-child(2) { animation-delay: -2s; }
+.hero-bg-circles circle:nth-child(3) { animation-delay: -4s; }
+@keyframes floatCircle { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+
+.hero-eyebrow {
+  font-family: var(--body); font-size: .75rem; letter-spacing: .3em;
+  color: var(--secondary); text-transform: uppercase; margin-bottom: 1rem;
+  opacity: .8;
+}
+.hero-title {
+  font-family: var(--display); font-size: clamp(4.5rem, 13vw, 13rem);
+  line-height: .87; color: var(--white); position: relative; z-index: 2;
+  text-shadow: 6px 6px 0 var(--primary), 12px 12px 0 var(--purple);
+  letter-spacing: -.01em;
+}
+.hero-title span { color: var(--primary); }
+.hero-sub {
+  font-family: var(--body); font-size: clamp(.8rem, 1.8vw, 1.1rem);
+  color: var(--secondary); margin-top: 1.5rem; opacity: .9;
+  letter-spacing: .1em; max-width: 540px; line-height: 1.6;
+}
+.hero-filmstrip {
+  display: flex; gap: 0; margin-top: 3rem; z-index: 2;
+}
+.hero-frame {
+  width: 64px; height: 64px; background: var(--black);
+  border: 3px solid var(--secondary); display: flex; align-items: center;
+  justify-content: center; font-size: 2rem; position: relative;
+}
+.hero-frame::before, .hero-frame::after {
+  content: ''; position: absolute; width: 10px; height: 10px;
+  background: var(--secondary); border-radius: 50%;
+}
+.hero-frame::before { top: -6px; left: 50%; transform: translateX(-50%); }
+.hero-frame::after { bottom: -6px; left: 50%; transform: translateX(-50%); }
+.hero-scroll {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: var(--body); font-size: .7rem; letter-spacing: .2em;
+  color: var(--secondary); animation: bounce 1.5s ease-in-out infinite; opacity: .7;
+}
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+/* ─── STATS GRID ─── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-bottom: 5px solid var(--black);
+}
+.stat-cell {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .5rem;
+  border-right: 4px solid var(--black); text-align: center;
+  padding: 1.5rem; transition: transform .3s; cursor: default;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell:hover { transform: scale(1.05); }
+.stat-cell:nth-child(1) { background: var(--primary); }
+.stat-cell:nth-child(2) { background: var(--secondary); }
+.stat-cell:nth-child(3) { background: var(--tertiary); }
+.stat-cell:nth-child(4) { background: var(--mint); }
+.stat-emoji { font-size: 2.8rem; }
+.stat-num { font-family: var(--display); font-size: clamp(2rem, 5vw, 3.5rem); color: var(--black); line-height: 1; }
+.stat-label { font-family: var(--body); font-size: .65rem; color: var(--black); opacity: .85; text-align: center; letter-spacing: .08em; }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+  background: var(--black); overflow: hidden; border-top: 4px solid var(--secondary);
+  border-bottom: 4px solid var(--secondary); padding: .7rem 0;
+}
+.marquee-track {
+  display: flex; white-space: nowrap;
+  animation: marqueeScroll 28s linear infinite;
+  font-family: var(--display); font-size: 1.2rem;
+  letter-spacing: .15em; color: var(--secondary);
+}
+.marquee-track span { padding-right: 2rem; }
+@keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ─── ERA SECTIONS ─── */
+.era {
+  position: relative; overflow: hidden;
+  border-bottom: 5px solid var(--black); padding: 5rem 2rem 6rem;
+}
+.era-bg-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .06; }
+.era-header-card {
+  max-width: 600px; margin: 0 auto 4rem;
+  background: var(--black); border: 4px solid var(--black);
+  text-align: center; padding: 2.5rem 2rem; position: relative;
+  animation: cardRock 4s ease-in-out infinite;
+  box-shadow: 10px 10px 0 var(--hdr-accent, var(--primary));
+}
+.era-header-card::before {
+  content: ''; position: absolute; inset: -8px;
+  border: 3px dashed var(--hdr-accent, var(--primary));
+  animation: dashOffset 6s linear infinite;
+  pointer-events: none;
+}
+@keyframes dashOffset {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 100; }
+}
+@keyframes cardRock {
+  0%,100% { transform: rotate(-1.8deg); }
+  50% { transform: rotate(1.8deg); }
+}
+.era-pip {
+  position: absolute; top: -14px; right: -14px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--primary); border: 3px solid var(--black);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  animation: pipBounce 2s ease-in-out infinite;
+}
+@keyframes pipBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.era-year {
+  font-family: var(--display); font-size: clamp(3rem, 7vw, 7rem);
+  color: var(--hdr-accent, var(--primary)); line-height: 1;
+}
+.era-title {
+  font-family: var(--display); font-size: clamp(1rem, 2.5vw, 1.9rem);
+  color: var(--white); margin-top: .4rem; letter-spacing: .05em;
+}
+
+/* ─── EVENT CARDS ─── */
+.cards-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem;
+}
+.card {
+  background: var(--white); color: var(--black);
+  border: 4px solid var(--black); padding: 1.5rem;
+  transform: rotate(var(--rot, 0deg)); transition: transform .3s, box-shadow .3s;
+  position: relative; cursor: default;
+}
+.card:hover { transform: rotate(0deg) scale(1.03); box-shadow: 8px 8px 0 var(--black); }
+.card-year {
+  display: inline-block; background: var(--black); color: var(--secondary);
+  font-family: var(--display); font-size: 1.3rem; padding: .1rem .7rem;
+  margin-bottom: .5rem; letter-spacing: .05em;
+}
+.card h3 { font-family: var(--display); font-size: 1.8rem; line-height: 1.1; margin-bottom: .6rem; }
+.card p { font-family: var(--body); font-size: .78rem; line-height: 1.6; opacity: .85; }
+.card-badge {
+  display: inline-block; background: var(--black); color: var(--white);
+  font-family: var(--body); font-size: .65rem; padding: .15rem .5rem;
+  margin-top: .7rem; margin-right: .3rem; border-radius: 2px;
+  transition: background .2s, color .2s;
+}
+.card-badge:hover { background: var(--primary); color: var(--white); text-decoration: none; }
+.card a { text-decoration: none; }
+.pop-badge {
+  position: absolute; top: -16px; right: 12px;
+  background: var(--primary); color: var(--white);
+  font-family: var(--display); font-size: .85rem;
+  padding: .2rem .6rem; transform: rotate(3deg);
+  border: 2px solid var(--black);
+}
+
+/* ─── HARING BURST ─── */
+.haring-burst {
+  position: absolute; pointer-events: none; opacity: .35;
+}
+
+/* ─── PHOTO STRIP ─── */
+.photo-strip {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  border-top: 5px solid var(--black); border-bottom: 5px solid var(--black);
+}
+.photo-cell {
+  aspect-ratio: 4/3; overflow: hidden; position: relative;
+  border-right: 4px solid var(--black);
+}
+.photo-cell:last-child { border-right: none; }
+.photo-cell svg { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; display: block; }
+.photo-cell:hover svg { transform: scale(1.07); }
+.photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--black); color: var(--secondary);
+  font-family: var(--display); font-size: .9rem; letter-spacing: .08em;
+  padding: .3rem .6rem; text-align: center;
+}
+
+/* ─── PARALLAX BAND ─── */
+.parallax-block {
+  height: 380px; overflow: hidden; position: relative;
+  border-bottom: 5px solid var(--black);
+}
+.parallax-inner {
+  position: absolute; inset: 0; display: flex;
+  align-items: center; justify-content: center; padding: 2rem;
+}
+.parallax-quote {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+  text-align: center; max-width: 800px; line-height: 1.25;
+}
+.parallax-quote em { font-style: normal; color: var(--secondary); }
+
+/* ─── ENTITY GRID ─── */
+.entity-section {
+  background: var(--black); padding: 5rem 2rem;
+  border-bottom: 5px solid var(--secondary);
+}
+.entity-header {
+  font-family: var(--display); font-size: clamp(2.5rem,6vw,5rem);
+  color: var(--secondary); text-align: center; margin-bottom: 2.5rem;
+}
+.entity-grid {
+  display: flex; flex-wrap: wrap; gap: .6rem;
+  max-width: 1100px; margin: 0 auto; justify-content: center;
+}
+.entity-badge {
+  font-family: var(--body); font-size: .72rem; font-weight: bold;
+  padding: .35rem .9rem; border: 2px solid var(--black);
+  border-radius: 3px; text-decoration: none; color: var(--black);
+  transition: transform .2s, box-shadow .2s; display: inline-block;
+  letter-spacing: .05em;
+}
+.entity-badge:hover { transform: scale(1.12) rotate(-2deg); box-shadow: 3px 3px 0 rgba(0,0,0,.3); }
+.eb1 { background: var(--primary); }
+.eb2 { background: var(--secondary); }
+.eb3 { background: var(--tertiary); }
+.eb4 { background: var(--mint); }
+.eb5 { background: var(--orange); }
+.eb6 { background: var(--purple); color: var(--white); }
+
+/* ─── COLOR STRIP + FOOTER ─── */
+.color-strip { display: flex; }
+.color-strip div {
+  flex: 1; height: 20px; border-right: 2px solid var(--black);
+}
+.color-strip div:last-child { border-right: none; }
+footer {
+  background: var(--black); text-align: center; padding: 2.5rem 1rem;
+}
+.footer-title {
+  font-family: var(--display); font-size: 1.2rem;
+  letter-spacing: .1em; color: var(--secondary);
+}
+.footer-sub { font-family: var(--body); font-size: .7rem; opacity: .5; font-style: italic; margin-top: .4rem; }
+
+/* ─── FADE UP ─── */
+.fade-up { opacity: 0; transform: translateY(40px); transition: opacity .6s ease, transform .6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── CLOSING ─── */
+.closing { background: #0d0020; color: var(--white); padding: 5rem 2rem; text-align: center; border-bottom: 5px solid var(--black); }
+.closing h2 { font-family: var(--display); font-size: clamp(3rem,7vw,7rem); color: var(--primary); margin-bottom: 1.5rem; line-height: 1; }
+.closing p { font-family: var(--body); font-size: .85rem; max-width: 700px; margin: 0 auto; line-height: 1.8; opacity: .8; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 600px) {
+  .photo-strip { grid-template-columns: 1fr; }
+  .photo-cell:nth-child(3) { display: none; }
+  .photo-cell { border-right: none; border-bottom: 4px solid var(--black); }
+}
+@media (min-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(4,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div class="pop-tip" id="tooltip"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <svg class="hero-bg-circles" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+    <circle cx="200" cy="150" r="180" fill="#ff3366" opacity=".12"/>
+    <circle cx="900" cy="500" r="260" fill="#7c3aed" opacity=".15"/>
+    <circle cx="650" cy="250" r="120" fill="#ffcc00" opacity=".1"/>
+    <circle cx="100" cy="600" r="90" fill="#00ccff" opacity=".09"/>
+    <!-- filmstrip holes -->
+    <rect x="0" y="0" width="1200" height="40" fill="#000" opacity=".6"/>
+    <rect x="0" y="660" width="1200" height="40" fill="#000" opacity=".6"/>
+    <circle cx="60" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="180" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="300" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="420" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="540" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="660" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="780" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="900" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="1020" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="1140" cy="20" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="60" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="180" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="300" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="420" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="540" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="660" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="780" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="900" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="1020" cy="680" r="10" fill="#fff" opacity=".3"/>
+    <circle cx="1140" cy="680" r="10" fill="#fff" opacity=".3"/>
+  </svg>
+  <div class="hero-eyebrow">✦ AN ILLUSTRATED TIMELINE ✦</div>
+  <h1 class="hero-title">A <span>BRIEF</span><br>HISTORY<br>OF ANIMATION</h1>
+  <p class="hero-sub">From spinning discs and shadow plays to AI-generated worlds — humankind's 5,000-year obsession with making still images dance.</p>
+  <div class="hero-filmstrip">
+    <div class="hero-frame">🪄</div>
+    <div class="hero-frame">🎞</div>
+    <div class="hero-frame">✏️</div>
+    <div class="hero-frame">📺</div>
+    <div class="hero-frame">💻</div>
+    <div class="hero-frame">🚀</div>
+  </div>
+  <div class="hero-scroll">▼ SCROLL TO BEGIN ▼</div>
+</section>
+
+<!-- ═══ STATS GRID ═══ -->
+<div class="stats-grid fade-up">
+  <div class="stat-cell" data-tip="Lascaux cave paintings in France (c. 15,000 BC) show animals with multiple legs suggesting motion.">
+    <div class="stat-emoji">🦬</div>
+    <div class="stat-num">15,000<br>BC</div>
+    <div class="stat-label">First "motion" art — cave paintings</div>
+  </div>
+  <div class="stat-cell" data-tip="Walt Disney's Snow White (1937) required 1.5 million individual drawings. It took 300+ animators three years.">
+    <div class="stat-emoji">✏️</div>
+    <div class="stat-num">1.5M</div>
+    <div class="stat-label">Drawings in Snow White (1937)</div>
+  </div>
+  <div class="stat-cell" data-tip="Toy Story (1995) was the first entirely computer-generated feature film — rendered on a 117-machine RenderFarm.">
+    <div class="stat-emoji">💰</div>
+    <div class="stat-num">$362M</div>
+    <div class="stat-label">Toy Story box office (1995)</div>
+  </div>
+  <div class="stat-cell" data-tip="Over 10,000 animated series, films, and shorts are produced globally each year across all formats.">
+    <div class="stat-emoji">🎬</div>
+    <div class="stat-num">10K+</div>
+    <div class="stat-label">Animated productions per year today</div>
+  </div>
+</div>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>ZOETROPE ✦ PHENAKISTOSCOPE ✦ EADWEARD MUYBRIDGE ✦ EMILE REYNAUD ✦ EMILE COHL ✦ WINSOR McCAY ✦ FELIX THE CAT ✦ STEAMBOAT WILLIE ✦ SNOW WHITE ✦ BAMBI ✦ LOONEY TUNES ✦ HANNA-BARBERA ✦ OSAMU TEZUKA ✦ DRAGON BALL ✦ THE SIMPSONS ✦ TOY STORY ✦ STUDIO GHIBLI ✦ SPIRITED AWAY ✦ FROZEN ✦ SPIDER-VERSE ✦ AI ANIMATION ✦ </span>
+    <span>ZOETROPE ✦ PHENAKISTOSCOPE ✦ EADWEARD MUYBRIDGE ✦ EMILE REYNAUD ✦ EMILE COHL ✦ WINSOR McCAY ✦ FELIX THE CAT ✦ STEAMBOAT WILLIE ✦ SNOW WHITE ✦ BAMBI ✦ LOONEY TUNES ✦ HANNA-BARBERA ✦ OSAMU TEZUKA ✦ DRAGON BALL ✦ THE SIMPSONS ✦ TOY STORY ✦ STUDIO GHIBLI ✦ SPIRITED AWAY ✦ FROZEN ✦ SPIDER-VERSE ✦ AI ANIMATION ✦ </span>
+  </div>
+</div>
+
+<!-- ═══ ERA 1: PRE-CINEMA ═══ -->
+<section class="era fade-up" style="background:var(--era1); --hdr-accent: var(--primary);">
+  <svg class="era-bg-svg" viewBox="0 0 800 600">
+    <defs><pattern id="dots1" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="3" fill="currentColor"/></pattern></defs>
+    <rect width="100%" height="100%" fill="url(#dots1)" color="#ff3366"/>
+  </svg>
+  <!-- Haring burst top-right -->
+  <svg class="haring-burst" style="top:-20px;right:40px;width:140px;height:140px;" viewBox="0 0 140 140">
+    <circle cx="70" cy="70" r="14" fill="#ff3366" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="70" y2="10" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="84" x2="70" y2="130" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="56" y1="70" x2="10" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="84" y1="70" x2="130" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="60" x2="24" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="80" x2="116" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="60" x2="116" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="80" x2="24" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+  </svg>
+
+  <div class="era-header-card">
+    <div class="era-pip">🪄</div>
+    <div class="era-year">PRE-1895</div>
+    <div class="era-title">The Persistence of Vision Era</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card fade-up" style="--rot: -1.2deg" data-tip="Philosophers' lanterns projected painted glass slides — some made moving figures by manually sliding glass panes.">
+      <span class="card-year">c.1000 AD</span>
+      <h3>Shadow Puppets & Magic Lanterns</h3>
+      <p>Long before film, Chinese shadow puppetry and the "Magic Lantern" (laterna magica) projected painted glass images onto walls. Showmen would manually shift overlapping slides to suggest motion — a horse galloping, a ghost rising.</p>
+      <a href="https://en.wikipedia.org/wiki/Magic_lantern" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot: 1.5deg" data-tip="The phenakistoscope used a spinning disc with sequential drawings and a mirror — the viewer's eye blended the frames into smooth motion.">
+      <span class="pop-badge">FIRST!</span>
+      <span class="card-year">1832</span>
+      <h3>The Phenakistoscope</h3>
+      <p>Belgian physicist Joseph Plateau invented the phenakistoscope — a spinning cardboard disc with sequential drawings viewed through slits. It was the first device to create genuine the illusion of continuous movement, proving the principle of persistence of vision.</p>
+      <a href="https://en.wikipedia.org/wiki/Phenakistiscope" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot: -0.8deg" data-tip="The zoetrope placed sequential drawings on a cylinder strip — multiple people could watch simultaneously, making it a popular Victorian parlour toy.">
+      <span class="card-year">1834</span>
+      <h3>The Zoetrope</h3>
+      <p>William George Horner's "Wheel of the Devil" (later renamed Zoetrope) replaced the disc with a spinning drum. Strips of sequential drawings placed inside created looping animations. It became a hugely popular Victorian toy and laid the conceptual groundwork for cinema.</p>
+      <a href="https://en.wikipedia.org/wiki/Zoetrope" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot: 1.0deg" data-tip="Muybridge's horse photographs proved that horses do lift all four hooves simultaneously during a gallop — settling a famous bet for railroad tycoon Leland Stanford.">
+      <span class="pop-badge">WOW!</span>
+      <span class="card-year">1878</span>
+      <h3>Muybridge's Galloping Horse</h3>
+      <p>Eadweard Muybridge set up 12 cameras with trip-wires to photograph a galloping horse in sequence. His "The Horse in Motion" proved animals could be captured in sequential frames — and directly inspired Thomas Edison and the Lumière Brothers to invent cinema.</p>
+      <a href="https://en.wikipedia.org/wiki/The_Horse_in_Motion" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP 1: Pre-Cinema Devices -->
+<div class="photo-strip fade-up">
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#2a1500"/>
+      <!-- Zoetrope illustration -->
+      <ellipse cx="200" cy="130" rx="110" ry="20" fill="#8B6914" stroke="#0d0d0d" stroke-width="3"/>
+      <rect x="90" y="80" width="220" height="50" rx="4" fill="#a07820" stroke="#0d0d0d" stroke-width="3"/>
+      <!-- Slits -->
+      <rect x="110" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="140" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="170" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="200" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="230" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="260" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <rect x="290" y="82" width="8" height="46" fill="#0d0d0d"/>
+      <!-- Stand -->
+      <rect x="190" y="150" width="20" height="80" fill="#6b4c10" stroke="#0d0d0d" stroke-width="2"/>
+      <ellipse cx="200" cy="235" rx="50" ry="10" fill="#4a3408" stroke="#0d0d0d" stroke-width="2"/>
+      <text x="200" y="270" font-family="serif" font-size="18" fill="#ffcc00" text-anchor="middle">ZOETROPE c.1834</text>
+    </svg>
+    <div class="photo-caption">THE ZOETROPE</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0a1a2a"/>
+      <!-- Horse motion sequence -->
+      <text x="200" y="30" font-family="serif" font-size="14" fill="#ffcc00" text-anchor="middle">MUYBRIDGE — THE HORSE IN MOTION, 1878</text>
+      <!-- 6 frames of horse -->
+      <g fill="none" stroke="#fff" stroke-width="1.5">
+        <!-- Frame 1 -->
+        <rect x="15" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="42" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- Frame 2 -->
+        <rect x="80" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="107" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- Frame 3 -->
+        <rect x="145" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="172" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- Frame 4 -->
+        <rect x="210" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="237" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- Frame 5 -->
+        <rect x="275" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="302" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- Frame 6 -->
+        <rect x="340" y="45" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="367" y="70" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <!-- row 2 -->
+        <rect x="15" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="42" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <rect x="80" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="107" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <rect x="145" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="172" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <rect x="210" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="237" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <rect x="275" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="302" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+        <rect x="340" y="105" width="55" height="45" fill="#111" stroke="#888"/>
+        <text x="367" y="130" font-size="22" text-anchor="middle" fill="#fff">🐎</text>
+      </g>
+      <text x="200" y="185" font-family="serif" font-size="13" fill="#aaa" text-anchor="middle">12 cameras, 12 trip-wires — the gallop revealed</text>
+      <text x="200" y="210" font-family="serif" font-size="28" fill="#ffcc00" text-anchor="middle">✦ The birth of sequential photography ✦</text>
+    </svg>
+    <div class="photo-caption">MUYBRIDGE'S GALLOP</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#1a001a"/>
+      <!-- Magic Lantern illustration -->
+      <rect x="120" y="100" width="160" height="100" rx="8" fill="#4a3408" stroke="#ffcc00" stroke-width="3"/>
+      <circle cx="200" cy="150" r="30" fill="#222" stroke="#ffcc00" stroke-width="2"/>
+      <circle cx="200" cy="150" r="22" fill="#ffaa00" opacity=".7"/>
+      <!-- Projection beam -->
+      <polygon points="230,130 390,60 390,240 230,170" fill="#ffcc00" opacity=".15"/>
+      <!-- Projected image -->
+      <rect x="340" y="80" width="50" height="140" fill="#fffbe6" stroke="#ccc" stroke-width="2" opacity=".8"/>
+      <text x="365" y="160" font-size="28" text-anchor="middle">👻</text>
+      <text x="200" y="240" font-family="serif" font-size="14" fill="#ffcc00" text-anchor="middle">MAGIC LANTERN</text>
+      <text x="200" y="260" font-family="serif" font-size="11" fill="#aaa" text-anchor="middle">Projecting painted glass slides, c.1659</text>
+    </svg>
+    <div class="photo-caption">MAGIC LANTERN</div>
+  </div>
+</div>
+
+<!-- ═══ ERA 2: SILENT FILM ERA ═══ -->
+<section class="era fade-up" style="background:var(--era2); --hdr-accent: var(--secondary);">
+  <svg class="era-bg-svg" viewBox="0 0 800 600">
+    <defs><pattern id="diag2" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="20" x2="20" y2="0" stroke="currentColor" stroke-width="1.5"/>
+    </pattern></defs>
+    <rect width="100%" height="100%" fill="url(#diag2)" color="#ffcc00"/>
+  </svg>
+  <svg class="haring-burst" style="bottom:30px;left:20px;width:120px;height:120px;transform:rotate(20deg)" viewBox="0 0 140 140">
+    <circle cx="70" cy="70" r="14" fill="#ffcc00" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="70" y2="10" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="84" x2="70" y2="130" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="56" y1="70" x2="10" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="84" y1="70" x2="130" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="60" x2="24" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="80" x2="116" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="60" x2="116" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="80" x2="24" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+  </svg>
+
+  <div class="era-header-card" style="--hdr-accent: var(--secondary);">
+    <div class="era-pip">🎞</div>
+    <div class="era-year" style="color:var(--secondary)">1895–1928</div>
+    <div class="era-title">The Silent Film & First Cartoons Era</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card fade-up" style="--rot:1.3deg" data-tip="Fantasmagorie was drawn entirely on blackboard and filmed — Cohl erased and redrew each frame, creating a surreal metamorphic world.">
+      <span class="pop-badge">FIRST!</span>
+      <span class="card-year">1908</span>
+      <h3>Fantasmagorie — The First Cartoon</h3>
+      <p>French caricaturist Émile Cohl created Fantasmagorie — widely considered the first true animated film. Two minutes of chalk-line figures morphing endlessly into each other. Cohl drew 700 individual frames, each one by hand on a chalk board, photographed on film.</p>
+      <a href="https://en.wikipedia.org/wiki/Fantasmagorie_(film)" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:-1.6deg" data-tip="McCay's Gertie was revolutionary for its character — she had a distinct personality and responded to McCay's live commands on stage, setting a template for all animated characters.">
+      <span class="card-year">1914</span>
+      <h3>Winsor McCay's Gertie the Dinosaur</h3>
+      <p>Winsor McCay's Gertie the Dinosaur introduced the idea that an animated character could have a personality. McCay would stand on stage alongside the film projection, appearing to give Gertie commands — she'd stomp, toss McCay into the air, and weep on cue.</p>
+      <a href="https://en.wikipedia.org/wiki/Gertie_the_Dinosaur" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:0.9deg" data-tip="Felix was the first animated character to become a global merchandising phenomenon — Felix's image appeared on watches, toys, and newspapers before Mickey Mouse existed.">
+      <span class="card-year">1919</span>
+      <h3>Felix the Cat — The First Star</h3>
+      <p>Created by Pat Sullivan and Otto Messmer, Felix the Cat became the first animated character to achieve true cultural stardom. His bold graphic design — solid black on white — reproduced perfectly in newspapers and on merchandise. He was the most recognised fictional character on Earth in the 1920s.</p>
+      <a href="https://en.wikipedia.org/wiki/Felix_the_Cat" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:-0.7deg" data-tip="Steamboat Willie debuted synchronised sound, where Mickey whistled and played music in perfect time with the soundtrack — a technical triumph audiences had never witnessed.">
+      <span class="pop-badge">NEW!</span>
+      <span class="card-year">1928</span>
+      <h3>Steamboat Willie & Mickey Mouse</h3>
+      <p>Walt Disney's Steamboat Willie was the first animated film with fully synchronised sound. Mickey Mouse (voiced by Disney himself) whistled, played a cow's teeth like a xylophone, and danced to music locked frame-perfect to the audio. Animation would never be silent again.</p>
+      <a href="https://en.wikipedia.org/wiki/Steamboat_Willie" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX QUOTE 1 -->
+<div class="parallax-block" style="background:#ff3366;">
+  <div class="parallax-inner" id="para1">
+    <p class="parallax-quote" style="color:#fff;">
+      "Animation can explain whatever the mind of man can conceive." <em>— Walt Disney</em>
+    </p>
+  </div>
+</div>
+
+<!-- ═══ ERA 3: GOLDEN AGE ═══ -->
+<section class="era fade-up" style="background:var(--era3); --hdr-accent: var(--tertiary);">
+  <svg class="era-bg-svg" viewBox="0 0 800 600">
+    <defs><pattern id="grid3" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1"/>
+    </pattern></defs>
+    <rect width="100%" height="100%" fill="url(#grid3)" color="#00ccff"/>
+  </svg>
+  <svg class="haring-burst" style="top:40px;right:80px;width:160px;height:160px;transform:rotate(-15deg)" viewBox="0 0 140 140">
+    <circle cx="70" cy="70" r="14" fill="#00ccff" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="70" y2="5" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="84" x2="70" y2="135" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="56" y1="70" x2="5" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="84" y1="70" x2="135" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="60" x2="20" y2="20" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="80" x2="120" y2="120" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="60" x2="120" y2="20" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="80" x2="20" y2="120" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="90" y2="10" stroke="#0d0d0d" stroke-width="2"/>
+    <line x1="70" y1="56" x2="50" y2="10" stroke="#0d0d0d" stroke-width="2"/>
+  </svg>
+
+  <div class="era-header-card" style="--hdr-accent: var(--tertiary);">
+    <div class="era-pip">✨</div>
+    <div class="era-year" style="color:var(--tertiary)">1928–1966</div>
+    <div class="era-title">Hollywood's Golden Age of Animation</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card fade-up" style="--rot:-1.4deg" data-tip="Disney developed the multiplane camera which moved layers of artwork at different speeds past the camera lens — creating a stunning sense of 3D depth in 2D films.">
+      <span class="pop-badge">WOW!</span>
+      <span class="card-year">1937</span>
+      <h3>Snow White — The First Feature</h3>
+      <p>Walt Disney's Snow White and the Seven Dwarfs was the world's first feature-length cel-animated film. Hollywood called it "Disney's Folly" — certain it would bankrupt the studio. Instead it grossed the equivalent of $1 billion today and won an honorary Academy Award plus seven miniature Oscars.</p>
+      <a href="https://en.wikipedia.org/wiki/Snow_White_and_the_Seven_Dwarfs_(1937_film)" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:1.1deg" data-tip="Fantasia was designed as an immersive experience with 'Fantasound' — an early form of surround sound. It failed commercially on release but is now considered a masterpiece.">
+      <span class="card-year">1940</span>
+      <h3>Fantasia — Animation Meets Music</h3>
+      <p>Disney's Fantasia married classical orchestral music to abstract animation for the first time. Featuring Bach, Beethoven, and Stravinsky, it pushed animation towards fine art. The Sorcerer's Apprentice sequence, starring Mickey Mouse, became one of cinema's most iconic moments.</p>
+      <a href="https://en.wikipedia.org/wiki/Fantasia_(1940_film)" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:-0.6deg" data-tip="Looney Tunes characters were deliberately drawn as anarchic opposites to Disney's polished, sentimental style — violence, irony and adult subtext hidden in cartoon form.">
+      <span class="card-year">1930–1969</span>
+      <h3>Looney Tunes — Warner Bros.' Rebellion</h3>
+      <p>While Disney aimed for art, Warner Bros.' Looney Tunes aimed for laughs. Directors like Chuck Jones, Tex Avery, and Friz Freleng created Bugs Bunny, Daffy Duck, and Tweety — characters defined by anarchic energy and self-aware humour that broke the fourth wall decades before it was fashionable.</p>
+      <a href="https://en.wikipedia.org/wiki/Looney_Tunes" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:1.8deg" data-tip="Tom and Jerry won seven Academy Awards for Short Subject — still a record for an animated franchise. Many 1940s cartoons were produced as supporting shorts before live-action features.">
+      <span class="card-year">1940</span>
+      <h3>Tom & Jerry — The Ultimate Chase</h3>
+      <p>Created by William Hanna and Joseph Barbera at MGM, Tom and Jerry pioneered the perfectly choreographed slapstick chase. With almost no dialogue, their shorts relied entirely on timing, musical scoring, and physical comedy — influencing virtually every animated short that followed.</p>
+      <a href="https://en.wikipedia.org/wiki/Tom_and_Jerry" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP 2: Golden Age -->
+<div class="photo-strip fade-up">
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#1a1a2e"/>
+      <text x="200" y="40" font-family="serif" font-size="16" fill="#ffcc00" text-anchor="middle" font-style="italic">Snow White & the Seven Dwarfs — 1937</text>
+      <!-- Snow White silhouette -->
+      <circle cx="200" cy="110" r="35" fill="#fdf0e0" stroke="#0d0d0d" stroke-width="2"/>
+      <text x="200" y="122" font-size="40" text-anchor="middle">👸</text>
+      <!-- 7 dwarfs -->
+      <text x="60" y="220" font-size="30" text-anchor="middle">🧙</text>
+      <text x="110" y="210" font-size="28" text-anchor="middle">🧙</text>
+      <text x="155" y="225" font-size="26" text-anchor="middle">🧙</text>
+      <text x="200" y="215" font-size="30" text-anchor="middle">🧙</text>
+      <text x="245" y="225" font-size="28" text-anchor="middle">🧙</text>
+      <text x="290" y="210" font-size="26" text-anchor="middle">🧙</text>
+      <text x="340" y="220" font-size="30" text-anchor="middle">🧙</text>
+      <text x="200" y="270" font-family="sans-serif" font-size="12" fill="#aaa" text-anchor="middle">300+ animators · 1.5 million drawings · 3 years</text>
+    </svg>
+    <div class="photo-caption">SNOW WHITE 1937</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0a1a00"/>
+      <text x="200" y="35" font-family="serif" font-size="15" fill="#00ccff" text-anchor="middle">LOONEY TUNES ROSTER</text>
+      <!-- Character badges -->
+      <rect x="30" y="55" width="80" height="55" rx="6" fill="#ff3366" stroke="#fff" stroke-width="2"/>
+      <text x="70" y="85" font-size="28" text-anchor="middle">🐰</text>
+      <text x="70" y="102" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle">BUGS BUNNY</text>
+      <rect x="130" y="55" width="80" height="55" rx="6" fill="#ffcc00" stroke="#fff" stroke-width="2"/>
+      <text x="170" y="85" font-size="28" text-anchor="middle">🦆</text>
+      <text x="170" y="102" font-family="sans-serif" font-size="9" fill="#0d0d0d" text-anchor="middle">DAFFY DUCK</text>
+      <rect x="230" y="55" width="80" height="55" rx="6" fill="#00ccff" stroke="#fff" stroke-width="2"/>
+      <text x="270" y="85" font-size="28" text-anchor="middle">🐦</text>
+      <text x="270" y="102" font-family="sans-serif" font-size="9" fill="#0d0d0d" text-anchor="middle">TWEETY</text>
+      <rect x="30" y="130" width="80" height="55" rx="6" fill="#7c3aed" stroke="#fff" stroke-width="2"/>
+      <text x="70" y="160" font-size="28" text-anchor="middle">🐱</text>
+      <text x="70" y="177" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle">SYLVESTER</text>
+      <rect x="130" y="130" width="80" height="55" rx="6" fill="#ff6b35" stroke="#fff" stroke-width="2"/>
+      <text x="170" y="160" font-size="28" text-anchor="middle">🐧</text>
+      <text x="170" y="177" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle">PORKY PIG</text>
+      <rect x="230" y="130" width="80" height="55" rx="6" fill="#00e6a0" stroke="#fff" stroke-width="2"/>
+      <text x="270" y="160" font-size="28" text-anchor="middle">🦆</text>
+      <text x="270" y="177" font-family="sans-serif" font-size="9" fill="#0d0d0d" text-anchor="middle">SPEEDY</text>
+      <text x="200" y="240" font-family="serif" font-size="13" fill="#aaa" text-anchor="middle">Warner Bros., 1930–1969</text>
+      <text x="200" y="260" font-family="serif" font-size="11" fill="#ffcc00" text-anchor="middle">"That's all folks!" — Porky Pig</text>
+    </svg>
+    <div class="photo-caption">LOONEY TUNES STARS</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#1a0030"/>
+      <!-- Fantasia musical visualisation -->
+      <text x="200" y="30" font-family="serif" font-size="15" fill="#ffcc00" text-anchor="middle">FANTASIA — 1940</text>
+      <!-- Musical wave forms -->
+      <path d="M0 150 Q50 80 100 150 Q150 220 200 150 Q250 80 300 150 Q350 220 400 150" stroke="#ff3366" stroke-width="3" fill="none" opacity=".8"/>
+      <path d="M0 150 Q50 60 100 150 Q150 240 200 150 Q250 60 300 150 Q350 240 400 150" stroke="#00ccff" stroke-width="2" fill="none" opacity=".7"/>
+      <path d="M0 150 Q50 100 100 150 Q150 200 200 150 Q250 100 300 150 Q350 200 400 150" stroke="#ffcc00" stroke-width="2" fill="none" opacity=".6"/>
+      <!-- Musical notes floating -->
+      <text x="80" y="90" font-size="24" fill="#fff" opacity=".7">🎵</text>
+      <text x="180" y="60" font-size="20" fill="#ffcc00" opacity=".8">♪</text>
+      <text x="300" y="85" font-size="28" fill="#ff3366" opacity=".7">🎶</text>
+      <text x="120" y="230" font-size="20" fill="#00ccff" opacity=".7">♩</text>
+      <text x="250" y="240" font-size="24" fill="#fff" opacity=".6">🎵</text>
+      <text x="200" y="270" font-family="serif" font-size="12" fill="#aaa" text-anchor="middle">Bach · Beethoven · Stravinsky · Dukas</text>
+    </svg>
+    <div class="photo-caption">FANTASIA 1940</div>
+  </div>
+</div>
+
+<!-- ═══ ERA 4: TV & JAPAN ═══ -->
+<section class="era fade-up" style="background:var(--era4); --hdr-accent: var(--mint);">
+  <svg class="era-bg-svg" viewBox="0 0 800 600">
+    <defs><pattern id="cross4" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+      <line x1="15" y1="0" x2="15" y2="30" stroke="currentColor" stroke-width="1"/>
+      <line x1="0" y1="15" x2="30" y2="15" stroke="currentColor" stroke-width="1"/>
+    </pattern></defs>
+    <rect width="100%" height="100%" fill="url(#cross4)" color="#00e6a0"/>
+  </svg>
+  <svg class="haring-burst" style="bottom:60px;right:60px;width:130px;height:130px;transform:rotate(30deg)" viewBox="0 0 140 140">
+    <circle cx="70" cy="70" r="14" fill="#00e6a0" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="70" y2="10" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="84" x2="70" y2="130" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="56" y1="70" x2="10" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="84" y1="70" x2="130" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="60" x2="24" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="80" x2="116" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="60" x2="116" y2="24" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="80" x2="24" y2="116" stroke="#0d0d0d" stroke-width="3"/>
+  </svg>
+
+  <div class="era-header-card" style="--hdr-accent: var(--mint);">
+    <div class="era-pip">📺</div>
+    <div class="era-year" style="color:var(--mint)">1960–1990</div>
+    <div class="era-title">Television, Anime & The Global Spread</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card fade-up" style="--rot:-1.0deg" data-tip="Hanna-Barbera pioneered 'limited animation' — reusing backgrounds, moving only mouths and eyes — to slash production costs and make weekly TV schedules viable.">
+      <span class="pop-badge">NEW!</span>
+      <span class="card-year">1960</span>
+      <h3>The Flintstones — Animation Goes Prime Time</h3>
+      <p>Hanna-Barbera's The Flintstones was the first animated series to air in prime-time television. Its success opened the floodgates — Saturday morning cartoons became a cornerstone of American childhood throughout the 1960s–80s, with Scooby-Doo, Yogi Bear, and dozens of others following.</p>
+      <a href="https://en.wikipedia.org/wiki/The_Flintstones" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:1.4deg" data-tip="Tezuka's 'god of manga' influence permeated Japanese animation — his large-eyed character design, adapted from Betty Boop and Disney, became the defining aesthetic of all anime.">
+      <span class="card-year">1963</span>
+      <h3>Astro Boy — The Birth of Anime</h3>
+      <p>Osamu Tezuka's Astro Boy (Tetsuwan Atom) debuted as Japan's first weekly animated TV series, establishing the visual vocabulary of anime — large expressive eyes, speed lines, emotional internal monologue. Tezuka's studio Mushi Production would spawn an entire industry.</p>
+      <a href="https://en.wikipedia.org/wiki/Astro_Boy" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:0.7deg" data-tip="Studio Ghibli has never compromised on theatrical release for home video first — every film is a full theatrical event, giving their animation an operatic weight other studios rarely achieve.">
+      <span class="pop-badge">ART!</span>
+      <span class="card-year">1985</span>
+      <h3>Studio Ghibli — Animation as Cinema</h3>
+      <p>Hayao Miyazaki and Isao Takahata founded Studio Ghibli after the success of Nausicaä. Their first film, Castle in the Sky, established Ghibli's signature: hand-painted environmental detail, complex female protagonists, and a profound emotional restraint that treated animation as high art.</p>
+      <a href="https://en.wikipedia.org/wiki/Studio_Ghibli" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:-1.7deg" data-tip="The Simpsons became the longest-running American scripted primetime television series in 1997. It has aired over 760 episodes as of 2024.">
+      <span class="card-year">1989</span>
+      <h3>The Simpsons — Animation for Adults</h3>
+      <p>Matt Groening's The Simpsons, launched on Fox, proved animation wasn't just for children. Its satirical, self-referential humour and consistent character development influenced every adult animated show that followed — from South Park to Family Guy to BoJack Horseman.</p>
+      <a href="https://en.wikipedia.org/wiki/The_Simpsons" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PARALLAX QUOTE 2 -->
+<div class="parallax-block" style="background:#0d0020;">
+  <div class="parallax-inner" id="para2">
+    <p class="parallax-quote" style="color:#fff;">
+      "My films are not fantasy. <em>The world itself is a fantasy</em> — I'm just trying to draw it accurately." — Hayao Miyazaki
+    </p>
+  </div>
+</div>
+
+<!-- ═══ ERA 5: CGI & BEYOND ═══ -->
+<section class="era fade-up" style="background:var(--era5); --hdr-accent: var(--purple);">
+  <svg class="era-bg-svg" viewBox="0 0 800 600">
+    <defs><pattern id="hex5" x="0" y="0" width="50" height="43.3" patternUnits="userSpaceOnUse">
+      <polygon points="25,0 50,12.5 50,37.5 25,50 0,37.5 0,12.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </pattern></defs>
+    <rect width="100%" height="100%" fill="url(#hex5)" color="#7c3aed"/>
+  </svg>
+  <svg class="haring-burst" style="top:30px;left:30px;width:150px;height:150px;transform:rotate(-10deg)" viewBox="0 0 140 140">
+    <circle cx="70" cy="70" r="14" fill="#7c3aed" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="70" y2="5" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="84" x2="70" y2="135" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="56" y1="70" x2="5" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="84" y1="70" x2="135" y2="70" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="60" x2="20" y2="20" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="80" x2="120" y2="120" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="80" y1="60" x2="120" y2="20" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="60" y1="80" x2="20" y2="120" stroke="#0d0d0d" stroke-width="3"/>
+    <line x1="70" y1="56" x2="95" y2="8" stroke="#0d0d0d" stroke-width="2"/>
+    <line x1="70" y1="56" x2="45" y2="8" stroke="#0d0d0d" stroke-width="2"/>
+  </svg>
+
+  <div class="era-header-card" style="--hdr-accent: var(--purple);">
+    <div class="era-pip">💻</div>
+    <div class="era-year" style="color:var(--purple)">1995–NOW</div>
+    <div class="era-title">The CGI Revolution & Digital Frontier</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card fade-up" style="--rot:-0.9deg" data-tip="Toy Story was rendered on a 117-machine RenderFarm running 24/7. A single frame with complex lighting took up to 45 minutes to render — the full film took 800,000 hours of computer time.">
+      <span class="pop-badge">FIRST!</span>
+      <span class="card-year">1995</span>
+      <h3>Toy Story — The First CGI Feature</h3>
+      <p>Pixar's Toy Story was the first entirely computer-generated feature film. John Lasseter's team at Pixar spent four years developing the software, the story, and the visual language of CGI animation from scratch. It grossed $362 million globally and transformed the entire industry overnight.</p>
+      <a href="https://en.wikipedia.org/wiki/Toy_Story" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+      <a href="https://www.pixar.com" target="_blank"><span class="card-badge">Pixar →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:1.6deg" data-tip="Spirited Away overtook Titanic at the Japanese box office and held the record as Japan's highest-grossing film for 19 years until Demon Slayer in 2020.">
+      <span class="pop-badge">🏆</span>
+      <span class="card-year">2001</span>
+      <h3>Spirited Away — Animation's Oscar Moment</h3>
+      <p>Hayao Miyazaki's Spirited Away won the Academy Award for Best Animated Feature in 2003 — the only non-English animated film ever to do so. A ten-year-old girl navigating a spirit bathhouse, it remains the most critically acclaimed animated film ever made.</p>
+      <a href="https://en.wikipedia.org/wiki/Spirited_Away" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:-1.3deg" data-tip="Spider-Verse used a revolutionary frame-rate technique — different characters animated at different frame rates (12fps for Miles, 24fps for Gwen) to express personality through movement itself.">
+      <span class="pop-badge">WOW!</span>
+      <span class="card-year">2018</span>
+      <h3>Spider-Verse — Reinventing the Look</h3>
+      <p>Into the Spider-Verse shattered assumptions about what CGI animation could look like. Its hand-drawn comic-book aesthetic — Ben-Day dots, expressive outlines, deliberately misaligned layers — proved that animation's visual language could evolve beyond photorealism. It won the Oscar for Best Animated Feature.</p>
+      <a href="https://en.wikipedia.org/wiki/Spider-Man:_Into_the_Spider-Verse" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+    <div class="card fade-up" style="--rot:0.5deg" data-tip="AI tools like Runway ML, Pika Labs, and Sora can now generate fully animated video clips from text prompts — collapsing a production process that once took years into minutes.">
+      <span class="pop-badge">NEW!</span>
+      <span class="card-year">2023–</span>
+      <h3>The AI Animation Revolution</h3>
+      <p>Generative AI tools have begun to reshape every layer of animation production — from AI-assisted in-betweening (automatically generating frames between keyframes) to text-to-video systems that can create entire animated sequences from a written description. The democratisation of animation is accelerating radically.</p>
+      <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_animation" target="_blank"><span class="card-badge">Wikipedia →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP 3: CGI Era -->
+<div class="photo-strip fade-up">
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#0a0020"/>
+      <text x="200" y="30" font-family="serif" font-size="15" fill="#7c3aed" text-anchor="middle">THE CGI EVOLUTION</text>
+      <!-- Timeline of CGI progress -->
+      <rect x="30" y="60" width="70" height="70" rx="4" fill="#1a1a3a" stroke="#7c3aed" stroke-width="2"/>
+      <text x="65" y="105" font-size="36" text-anchor="middle">🧸</text>
+      <text x="65" y="130" font-family="sans-serif" font-size="9" fill="#aaa" text-anchor="middle">1995: Toy Story</text>
+      <rect x="120" y="50" width="70" height="80" rx="4" fill="#1a1a3a" stroke="#ff3366" stroke-width="2"/>
+      <text x="155" y="100" font-size="40" text-anchor="middle">🤖</text>
+      <text x="155" y="130" font-family="sans-serif" font-size="9" fill="#aaa" text-anchor="middle">1999: Iron Giant</text>
+      <rect x="210" y="40" width="70" height="90" rx="4" fill="#1a1a3a" stroke="#00ccff" stroke-width="2"/>
+      <text x="245" y="95" font-size="44" text-anchor="middle">🧊</text>
+      <text x="245" y="130" font-family="sans-serif" font-size="9" fill="#aaa" text-anchor="middle">2013: Frozen</text>
+      <rect x="300" y="30" width="70" height="100" rx="4" fill="#1a1a3a" stroke="#00e6a0" stroke-width="2"/>
+      <text x="335" y="90" font-size="48" text-anchor="middle">🕷</text>
+      <text x="335" y="130" font-family="sans-serif" font-size="9" fill="#aaa" text-anchor="middle">2018: Spider-Verse</text>
+      <!-- Progress arrow -->
+      <path d="M30 200 L370 200" stroke="#ffcc00" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#ffcc00"/>
+        </marker>
+      </defs>
+      <text x="200" y="230" font-family="sans-serif" font-size="11" fill="#ffcc00" text-anchor="middle">PHOTOREALISM → STYLISED EXPRESSION</text>
+    </svg>
+    <div class="photo-caption">CGI EVOLUTION</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#001a10"/>
+      <text x="200" y="30" font-family="serif" font-size="14" fill="#00e6a0" text-anchor="middle">STUDIO GHIBLI — FILMOGRAPHY</text>
+      <!-- Grid of Ghibli films -->
+      <rect x="20" y="50" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="62" y="75" font-size="20" text-anchor="middle">🏯</text>
+      <text x="62" y="92" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">Castle in Sky '86</text>
+      <rect x="115" y="50" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="157" y="75" font-size="20" text-anchor="middle">🌳</text>
+      <text x="157" y="92" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">My Neighbor Totoro '88</text>
+      <rect x="210" y="50" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="252" y="75" font-size="20" text-anchor="middle">🐱</text>
+      <text x="252" y="92" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">Kiki's Delivery '89</text>
+      <rect x="305" y="50" width="80" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="345" y="75" font-size="20" text-anchor="middle">✈️</text>
+      <text x="345" y="92" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">Porco Rosso '92</text>
+      <rect x="20" y="115" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#ffcc00" stroke-width="2"/>
+      <text x="62" y="140" font-size="20" text-anchor="middle">🐗</text>
+      <text x="62" y="157" font-family="sans-serif" font-size="8" fill="#ffcc00" text-anchor="middle">Princess Mononoke '97</text>
+      <rect x="115" y="115" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#ffcc00" stroke-width="2.5"/>
+      <text x="157" y="140" font-size="20" text-anchor="middle">🛁</text>
+      <text x="157" y="157" font-family="sans-serif" font-size="8" fill="#ffcc00" text-anchor="middle">Spirited Away '01 ⭐</text>
+      <rect x="210" y="115" width="85" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="252" y="140" font-size="20" text-anchor="middle">🏰</text>
+      <text x="252" y="157" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">Howl's Moving Castle '04</text>
+      <rect x="305" y="115" width="80" height="50" rx="3" fill="#1a3a1a" stroke="#00e6a0" stroke-width="1.5"/>
+      <text x="345" y="140" font-size="20" text-anchor="middle">🌊</text>
+      <text x="345" y="157" font-family="sans-serif" font-size="8" fill="#ccc" text-anchor="middle">Ponyo '08</text>
+      <text x="200" y="210" font-family="sans-serif" font-size="11" fill="#00e6a0" text-anchor="middle">Founded 1985 · Hayao Miyazaki & Isao Takahata</text>
+      <text x="200" y="230" font-family="sans-serif" font-size="10" fill="#aaa" text-anchor="middle">1 Academy Award for Best Animated Feature</text>
+    </svg>
+    <div class="photo-caption">STUDIO GHIBLI</div>
+  </div>
+  <div class="photo-cell">
+    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#120020"/>
+      <text x="200" y="30" font-family="serif" font-size="14" fill="#ff3366" text-anchor="middle">SPIDER-VERSE STYLE BREAKDOWN</text>
+      <!-- Spider-verse effect simulation -->
+      <rect x="50" y="50" width="300" height="180" fill="#1a001a"/>
+      <!-- Halftone dots -->
+      <circle cx="80" cy="80" r="6" fill="#ff3366" opacity=".7"/>
+      <circle cx="100" cy="80" r="4" fill="#ff3366" opacity=".5"/>
+      <circle cx="120" cy="80" r="7" fill="#ff3366" opacity=".8"/>
+      <circle cx="80" cy="100" r="3" fill="#ff3366" opacity=".4"/>
+      <circle cx="100" cy="100" r="8" fill="#ff3366" opacity=".9"/>
+      <circle cx="80" cy="80" r="6" fill="#ff3366" opacity=".7"/>
+      <!-- Speed lines -->
+      <line x1="200" y1="140" x2="50" y2="100" stroke="#ffcc00" stroke-width="2" opacity=".6"/>
+      <line x1="200" y1="140" x2="50" y2="130" stroke="#ffcc00" stroke-width="1.5" opacity=".5"/>
+      <line x1="200" y1="140" x2="50" y2="160" stroke="#ffcc00" stroke-width="2" opacity=".6"/>
+      <line x1="200" y1="140" x2="350" y2="90" stroke="#00ccff" stroke-width="2" opacity=".5"/>
+      <line x1="200" y1="140" x2="350" y2="160" stroke="#00ccff" stroke-width="1.5" opacity=".4"/>
+      <!-- Spider figure -->
+      <text x="200" y="160" font-size="64" text-anchor="middle">🕷️</text>
+      <!-- Comic outline effect -->
+      <rect x="50" y="50" width="300" height="180" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="8,4"/>
+      <!-- Action words -->
+      <text x="90" y="200" font-family="Impact, sans-serif" font-size="18" fill="#ffcc00" transform="rotate(-15,90,200)">POW!</text>
+      <text x="280" y="75" font-family="Impact, sans-serif" font-size="16" fill="#ff3366" transform="rotate(10,280,75)">THWIP!</text>
+      <text x="200" y="260" font-family="sans-serif" font-size="11" fill="#aaa" text-anchor="middle">Into the Spider-Verse · Sony Pictures · 2018</text>
+    </svg>
+    <div class="photo-caption">SPIDER-VERSE 2018</div>
+  </div>
+</div>
+
+<!-- ═══ CLOSING ═══ -->
+<section class="closing fade-up">
+  <h2>WHAT COMES<br>NEXT?</h2>
+  <p>We stand at the most radical inflection point in animation's history. For a century, a single animated minute required twelve drawings. Today, AI systems can generate that minute from a sentence of text. Tools once requiring studios of hundreds are now accessible to a single creator with a laptop. Yet the greatest animated works remain those driven by the irreplaceable human impulse that started everything: the desire to make still images breathe, to give feeling to fiction, to make the impossible move.</p>
+  <br><br>
+  <p style="color:var(--secondary);">From Lascaux cave walls to generative AI — the story of animation is the story of humanity's refusal to accept that pictures should stay still.</p>
+</section>
+
+<!-- ═══ ENTITY GRID ═══ -->
+<section class="entity-section fade-up">
+  <div class="entity-header">KEY PLAYERS & PIONEERS</div>
+  <div class="entity-grid">
+    <a href="https://en.wikipedia.org/wiki/Walt_Disney" target="_blank" class="entity-badge eb1">Walt Disney</a>
+    <a href="https://en.wikipedia.org/wiki/Hayao_Miyazaki" target="_blank" class="entity-badge eb2">Hayao Miyazaki</a>
+    <a href="https://en.wikipedia.org/wiki/Pixar" target="_blank" class="entity-badge eb3">Pixar Animation</a>
+    <a href="https://en.wikipedia.org/wiki/Studio_Ghibli" target="_blank" class="entity-badge eb4">Studio Ghibli</a>
+    <a href="https://en.wikipedia.org/wiki/Winsor_McCay" target="_blank" class="entity-badge eb5">Winsor McCay</a>
+    <a href="https://en.wikipedia.org/wiki/Osamu_Tezuka" target="_blank" class="entity-badge eb6">Osamu Tezuka</a>
+    <a href="https://en.wikipedia.org/wiki/Eadweard_Muybridge" target="_blank" class="entity-badge eb1">Eadweard Muybridge</a>
+    <a href="https://en.wikipedia.org/wiki/Chuck_Jones" target="_blank" class="entity-badge eb2">Chuck Jones</a>
+    <a href="https://en.wikipedia.org/wiki/John_Lasseter" target="_blank" class="entity-badge eb3">John Lasseter</a>
+    <a href="https://en.wikipedia.org/wiki/Tex_Avery" target="_blank" class="entity-badge eb4">Tex Avery</a>
+    <a href="https://en.wikipedia.org/wiki/Hanna-Barbera" target="_blank" class="entity-badge eb5">Hanna-Barbera</a>
+    <a href="https://en.wikipedia.org/wiki/DreamWorks_Animation" target="_blank" class="entity-badge eb1">DreamWorks Animation</a>
+    <a href="https://en.wikipedia.org/wiki/%C3%89mile_Cohl" target="_blank" class="entity-badge eb2">Émile Cohl</a>
+    <a href="https://en.wikipedia.org/wiki/Matt_Groening" target="_blank" class="entity-badge eb3">Matt Groening</a>
+    <a href="https://en.wikipedia.org/wiki/Warner_Bros._Animation" target="_blank" class="entity-badge eb6">Warner Bros. Animation</a>
+    <a href="https://en.wikipedia.org/wiki/Isao_Takahata" target="_blank" class="entity-badge eb4">Isao Takahata</a>
+    <a href="https://en.wikipedia.org/wiki/Otto_Messmer" target="_blank" class="entity-badge eb5">Otto Messmer</a>
+    <a href="https://en.wikipedia.org/wiki/Nick_Park" target="_blank" class="entity-badge eb1">Nick Park</a>
+    <a href="https://en.wikipedia.org/wiki/Aardman_Animations" target="_blank" class="entity-badge eb2">Aardman Animations</a>
+    <a href="https://en.wikipedia.org/wiki/Sony_Pictures_Animation" target="_blank" class="entity-badge eb3">Sony Pictures Animation</a>
+    <a href="https://en.wikipedia.org/wiki/Satoshi_Kon" target="_blank" class="entity-badge eb4">Satoshi Kon</a>
+    <a href="https://en.wikipedia.org/wiki/Brad_Bird" target="_blank" class="entity-badge eb5">Brad Bird</a>
+    <a href="https://en.wikipedia.org/wiki/Cartoon_Network" target="_blank" class="entity-badge eb6">Cartoon Network</a>
+    <a href="https://en.wikipedia.org/wiki/Netflix_Animation" target="_blank" class="entity-badge eb1">Netflix Animation</a>
+    <a href="https://en.wikipedia.org/wiki/Joe_Murray_(animator)" target="_blank" class="entity-badge eb2">Nickelodeon</a>
+    <a href="https://en.wikipedia.org/wiki/TOEI_Animation" target="_blank" class="entity-badge eb3">Toei Animation</a>
+    <a href="https://en.wikipedia.org/wiki/Gainax" target="_blank" class="entity-badge eb4">Gainax / TRIGGER</a>
+    <a href="https://en.wikipedia.org/wiki/Madhouse_(company)" target="_blank" class="entity-badge eb5">Madhouse</a>
+    <a href="https://en.wikipedia.org/wiki/MAPPA" target="_blank" class="entity-badge eb6">MAPPA</a>
+    <a href="https://en.wikipedia.org/wiki/Laika_(company)" target="_blank" class="entity-badge eb1">Laika (Stop Motion)</a>
+  </div>
+</section>
+
+<!-- COLOR STRIP -->
+<div class="color-strip">
+  <div style="background:var(--primary)"></div>
+  <div style="background:var(--secondary)"></div>
+  <div style="background:var(--tertiary)"></div>
+  <div style="background:var(--mint)"></div>
+  <div style="background:var(--purple)"></div>
+  <div style="background:var(--orange)"></div>
+  <div style="background:#fff"></div>
+  <div style="background:var(--black)"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-title">A (BRIEF) HISTORY OF ANIMATION</div>
+  <div class="footer-sub">From the Zoetrope to Generative AI — Five Millennia of Making Pictures Move · Built with ✦ and too much caffeine</div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── TOUCH DETECT ───
+  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  var dot = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+
+  if (isTouch) {
+    if (dot) dot.style.display = 'none';
+    if (ring) ring.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  } else {
+    var palette = ['#ff3366','#ffcc00','#00ccff','#00e6a0','#7c3aed','#ff6b35'];
+    var ci = 0;
+    var mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    });
+
+    document.addEventListener('click', function() {
+      ci = (ci + 1) % palette.length;
+      dot.style.background = palette[ci];
+      ring.style.borderColor = palette[ci];
+    });
+
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+  }
+
+  // ─── TOOLTIP ───
+  var tip = document.getElementById('tooltip');
+  document.querySelectorAll('[data-tip]').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      tip.textContent = el.getAttribute('data-tip');
+      tip.style.opacity = '1';
+    });
+    el.addEventListener('mousemove', function(e) {
+      tip.style.left = (e.clientX + 15) + 'px';
+      tip.style.top = (e.clientY - 10) + 'px';
+    });
+    el.addEventListener('mouseleave', function() {
+      tip.style.opacity = '0';
+    });
+  });
+
+  // ─── FADE UP (IntersectionObserver) ───
+  var fadeEls = document.querySelectorAll('.fade-up');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry, i) {
+        if (entry.isIntersecting) {
+          setTimeout(function() {
+            entry.target.classList.add('visible');
+          }, i * 80);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    fadeEls.forEach(function(el) { obs.observe(el); });
+  } else {
+    fadeEls.forEach(function(el) { el.classList.add('visible'); });
+  }
+
+  // ─── PARALLAX ───
+  if (!isTouch) {
+    var para1 = document.getElementById('para1');
+    var para2 = document.getElementById('para2');
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var sy = window.scrollY;
+          if (para1) para1.style.transform = 'translateY(' + (sy * 0.11) + 'px)';
+          if (para2) para2.style.transform = 'translateY(' + (sy * 0.07) + 'px)';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
